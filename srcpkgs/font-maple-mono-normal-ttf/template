@@ -1,0 +1,21 @@
+# Template file for 'font-maple-mono-normal-ttf'
+pkgname=font-maple-mono-normal-ttf
+version=7.9
+revision=1
+depends="font-util"
+short_desc="Open source monospace font without round corner and ligatures"
+maintainer="datfooldive <datfooldive@gmail.com>"
+license="OFL-1.1"
+homepage="https://github.com/subframe7536/Maple-font"
+distfiles="https://github.com/subframe7536/Maple-font/releases/download/v${version}/MapleMonoNormal-TTF.zip"
+checksum=394bb22b577e2fe3d098778d4b17bbee5cbb73cdf715363250bb847bd71b877f
+font_dirs="/usr/share/fonts/TTF"
+provides="font:monospace-0_1"
+
+do_install() {
+	vmkdir usr/share/fonts/TTF
+	for f in "${wrksrc}"/*.ttf; do
+		vinstall "$f" 644 usr/share/fonts/TTF
+	done
+	vlicense LICENSE.txt
+}
