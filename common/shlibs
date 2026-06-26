@@ -1526,7 +1526,7 @@ libdovecot-storage.so.0 dovecot-2.3.13_3
 libdovecot-lda.so.0 dovecot-2.3.13_3
 libdovecot-ldap.so.0 dovecot-plugin-ldap-2.4.1r4_1
 libKF5Kirigami2.so.5 kirigami2-5.47.0_1
-libZXing.so.3 zxing-cpp-2.0.0_1
+libZXing.so.4 zxing-cpp-3.0.2_1
 libfreerdp-client3.so.3 libfreerdp-3.22.0_1
 libfreerdp-server-proxy3.so.3 libfreerdp-server-3.22.0_1
 libfreerdp-server3.so.3 libfreerdp-server-3.22.0_1
