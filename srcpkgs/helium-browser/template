@@ -1,0 +1,42 @@
+# Template file for 'helium-browser'
+pkgname=helium-browser
+version=0.13.5.1
+revision=1
+archs="x86_64"
+create_wrksrc=yes
+depends="alsa-lib dbus-libs gtk+3 hicolor-icon-theme libcups libpulseaudio
+ libva libXScrnSaver libXtst nss liberation-fonts-ttf xdg-utils desktop-file-utils"
+short_desc="Private, fast, and honest web browser"
+maintainer="datfooldive <datfooldive@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/imputnet/helium"
+distfiles="https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64_linux.tar.xz"
+checksum=ef49247b272707b3aecedd38ecda43f0eff9b7930ef6c13c43171bcbbbf7fe66
+repository="nonfree"
+nostrip=yes
+nopie=yes
+restricted=yes
+noshlibprovides=yes
+
+do_install() {
+	local helibdir="usr/lib/helium"
+	local srcdir="${wrksrc}/helium-${version}-x86_64_linux"
+
+	vmkdir ${helibdir}
+	cp -a "${srcdir}"/* "${DESTDIR}/${helibdir}/"
+
+	chmod 755 "${DESTDIR}/${helibdir}/helium"
+	chmod 755 "${DESTDIR}/${helibdir}/chrome"
+	chmod 755 "${DESTDIR}/${helibdir}/helium-wrapper"
+	chmod 755 "${DESTDIR}/${helibdir}/helium_crashpad_handler"
+	chmod 755 "${DESTDIR}/${helibdir}/chromedriver"
+
+	vmkdir usr/share/applications
+	cp "${srcdir}/helium.desktop" "${DESTDIR}/usr/share/applications/"
+
+	vmkdir usr/share/pixmaps
+	cp "${srcdir}/product_logo_256.png" "${DESTDIR}/usr/share/pixmaps/helium.png"
+
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}/${helibdir}/helium" "${DESTDIR}/usr/bin/helium"
+}
