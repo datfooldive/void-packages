@@ -1,0 +1,56 @@
+# Template file for 'FjordLauncher'
+pkgname=FjordLauncher
+version=11.0.2.0
+revision=1
+archs="x86_64"
+create_wrksrc=yes
+short_desc="Prism Launcher fork with alternative auth server support"
+maintainer="datfooldive <datfooldive@gmail.com>"
+license="GPL-3.0-only, LGPL-3.0-or-later, LGPL-2.0-or-later, Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, OFL-1.1, custom:Batch"
+homepage="https://github.com/unmojang/FjordLauncher"
+distfiles="https://github.com/unmojang/FjordLauncher/releases/download/${version}/FjordLauncher-Linux-Qt6-Portable-${version}.tar.gz"
+checksum=2e2d5dc2228ac21e80ca036b3c1381800f10e98b36d62b9ac2005c54e68a6e4a
+depends="java-runtime>=17 libglvnd qt6-base qt6-qt5compat qt6-svg
+ qt6-imageformats qt6-networkauth qt6-plugin-tls-openssl zlib hicolor-icon-theme"
+
+nopie=yes
+nostrip=yes
+noshlibprovides=yes
+noverifyrdeps=yes
+
+post_extract() {
+	rm -f manifest.txt portable.txt qt.conf qtlogging.ini
+	rm -rf etc lib plugins share/X11 share/glib-2.0
+}
+
+do_install() {
+	local fjorddir="usr/lib/FjordLauncher"
+
+	vsed -i 's/Icon=org.unmojang.FjordLauncher/Icon=fjordlauncher/' \
+		share/applications/org.unmojang.FjordLauncher.desktop
+
+	vmkdir ${fjorddir}
+	vcopy FjordLauncher ${fjorddir}
+	vcopy bin ${fjorddir}
+	vcopy shared ${fjorddir}
+	vmkdir ${fjorddir}/share
+	vcopy share/FjordLauncher ${fjorddir}/share
+
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}/${fjorddir}/FjordLauncher" "${DESTDIR}/usr/bin/fjordlauncher"
+
+	vman share/man/man6/fjordlauncher.6
+	vinstall share/applications/org.unmojang.FjordLauncher.desktop 644 usr/share/applications
+	vinstall share/metainfo/org.unmojang.FjordLauncher.metainfo.xml 644 usr/share/metainfo
+	vinstall share/mime/packages/org.unmojang.FjordLauncher.xml 644 usr/share/mime/packages fjordlauncher-modrinth-mrpack-mime.xml
+	vcopy share/icons usr/share
+	vinstall share/icons/hicolor/256x256/apps/org.unmojang.FjordLauncher.png \
+		644 usr/share/icons/hicolor/256x256/apps fjordlauncher.png
+	vinstall share/icons/hicolor/scalable/apps/org.unmojang.FjordLauncher.svg \
+		644 usr/share/icons/hicolor/scalable/apps fjordlauncher.svg
+	vcopy share/qlogging-categories6 usr/share
+
+	vlicense ${FILESDIR}/batch.license
+	vlicense ${FILESDIR}/lionshead.license
+	vlicense ${FILESDIR}/mdi.license
+}
