@@ -1,0 +1,59 @@
+# Template file for 'PineconeMC'
+pkgname=PineconeMC
+version=11.0.2
+revision=1
+archs="x86_64"
+create_wrksrc=yes
+depends="java-runtime>=17 libglvnd qt6-base qt6-qt5compat qt6-svg
+ qt6-imageformats qt6-networkauth qt6-plugin-tls-openssl zlib hicolor-icon-theme"
+short_desc="Prism Launcher fork with integrated Ely.by account support"
+maintainer="datfooldive <datfooldive@gmail.com>"
+license="GPL-3.0-only, LGPL-3.0-or-later, LGPL-2.0-or-later, Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, OFL-1.1, custom:Batch"
+homepage="https://github.com/ElyPrismLauncher/Launcher"
+distfiles="https://github.com/ElyPrismLauncher/Launcher/releases/download/${version}/PineconeMC-Linux-Qt6-Portable-${version}.tar.gz"
+checksum=bc0ee62411ebd77e13d78f0deaf00a82aa39c4a4d770ff4c32592a53f7708f1d
+
+nopie=yes
+nostrip=yes
+noshlibprovides=yes
+noverifyrdeps=yes
+
+post_extract() {
+	rm -f manifest.txt portable.txt qt.conf qtlogging.ini
+	rm -rf etc lib plugins share/X11 share/glib-2.0
+}
+
+do_install() {
+	local pinedir="usr/lib/PineconeMC"
+
+	vsed -i 's/Icon=io.github.elyprismlauncher.ElyPrismLauncher/Icon=pineconemc/' \
+		share/applications/io.github.elyprismlauncher.ElyPrismLauncher.desktop
+	vsed -i 's/Exec=elyprismlauncher %U/Exec=pineconemc %U/' \
+		share/applications/io.github.elyprismlauncher.ElyPrismLauncher.desktop
+
+	vmkdir ${pinedir}
+	vcopy ElyPrismLauncher ${pinedir}
+	vcopy bin ${pinedir}
+	vcopy shared ${pinedir}
+	vmkdir ${pinedir}/share
+	vcopy share/ElyPrismLauncher ${pinedir}/share
+
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}/${pinedir}/ElyPrismLauncher" "${DESTDIR}/usr/bin/pineconemc"
+	ln -sfr "${DESTDIR}/${pinedir}/ElyPrismLauncher" "${DESTDIR}/usr/bin/elyprismlauncher"
+
+	vman share/man/man6/elyprismlauncher.6
+	vinstall share/applications/io.github.elyprismlauncher.ElyPrismLauncher.desktop 644 usr/share/applications
+	vinstall share/metainfo/io.github.elyprismlauncher.ElyPrismLauncher.metainfo.xml 644 usr/share/metainfo
+	vinstall share/mime/packages/io.github.elyprismlauncher.ElyPrismLauncher.xml 644 usr/share/mime/packages pineconemc-modrinth-mrpack-mime.xml
+	vcopy share/icons usr/share
+	vinstall share/icons/hicolor/256x256/apps/io.github.elyprismlauncher.ElyPrismLauncher.png \
+		644 usr/share/icons/hicolor/256x256/apps pineconemc.png
+	vinstall share/icons/hicolor/scalable/apps/io.github.elyprismlauncher.ElyPrismLauncher.svg \
+		644 usr/share/icons/hicolor/scalable/apps pineconemc.svg
+	vcopy share/qlogging-categories6 usr/share
+
+	vlicense ${FILESDIR}/batch.license
+	vlicense ${FILESDIR}/lionshead.license
+	vlicense ${FILESDIR}/mdi.license
+}
