@@ -1,0 +1,64 @@
+# Template file for 'brave-origin-nightly'
+pkgname=brave-origin-nightly
+version=1.94.9
+revision=1
+archs="x86_64"
+create_wrksrc=yes
+hostmakedepends="unzip"
+depends="alsa-lib dbus-libs gtk+3 hicolor-icon-theme libcups libpulseaudio
+ libva libXScrnSaver libXtst nss liberation-fonts-ttf xdg-utils desktop-file-utils"
+short_desc="Nightly build of the Brave Origin web browser"
+maintainer="datfooldive <datfooldive@gmail.com>"
+license="MPL-2.0"
+homepage="https://github.com/brave/brave-browser"
+distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-nightly-${version}-linux-amd64.zip"
+checksum=22981d119d7bb44833a567b09f5d5e5d34b9377b48ec5d927e784b29715c2383
+repository="nonfree"
+nostrip=yes
+nopie=yes
+restricted=yes
+noshlibprovides=yes
+
+_do_install_icon() {
+	local size="$1"
+
+	vinstall "product_logo_${size}_nightly.png" 644 \
+		"usr/share/icons/hicolor/${size}x${size}/apps" brave-origin-nightly.png
+}
+
+do_install() {
+	local appdir="usr/lib/brave-origin-nightly"
+
+	vmkdir ${appdir}
+	cp -a "${wrksrc}"/* "${DESTDIR}/${appdir}/"
+
+	chmod 755 "${DESTDIR}/${appdir}/brave"
+	chmod 755 "${DESTDIR}/${appdir}/brave-origin-nightly"
+	chmod 755 "${DESTDIR}/${appdir}/chrome-sandbox"
+	chmod 755 "${DESTDIR}/${appdir}/chrome_crashpad_handler"
+
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}/${appdir}/brave-origin-nightly" \
+		"${DESTDIR}/usr/bin/brave-origin-nightly"
+
+	for size in 16 24 32 48 64 128 256; do
+		_do_install_icon "$size"
+	done
+
+	vmkdir usr/share/applications
+	cat > "${DESTDIR}/usr/share/applications/brave-origin-nightly.desktop" <<-EOF
+		[Desktop Entry]
+		Version=1.0
+		Name=Brave Origin Nightly
+		GenericName=Web Browser
+		Comment=Browse the web
+		Exec=brave-origin-nightly %U
+		Terminal=false
+		Icon=brave-origin-nightly
+		Type=Application
+		Categories=Network;WebBrowser;
+		MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
+	EOF
+
+	vlicense LICENSE
+}
