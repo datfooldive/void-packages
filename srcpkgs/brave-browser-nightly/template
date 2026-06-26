@@ -1,0 +1,64 @@
+# Template file for 'brave-browser-nightly'
+pkgname=brave-browser-nightly
+version=1.94.7
+revision=1
+archs="x86_64"
+create_wrksrc=yes
+hostmakedepends="unzip"
+depends="alsa-lib dbus-libs gtk+3 hicolor-icon-theme libcups libpulseaudio
+ libva libXScrnSaver libXtst nss liberation-fonts-ttf xdg-utils desktop-file-utils"
+short_desc="Nightly build of the Brave web browser"
+maintainer="datfooldive <datfooldive@gmail.com>"
+license="MPL-2.0"
+homepage="https://github.com/brave/brave-browser"
+distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser-nightly-${version}-linux-amd64.zip"
+checksum=4c0db5efc4e7021b940c8c92734ba4c3314f7322fd980942ffd187975f0f2687
+repository="nonfree"
+nostrip=yes
+nopie=yes
+restricted=yes
+noshlibprovides=yes
+
+_do_install_icon() {
+	local size="$1"
+
+	vinstall "product_logo_${size}_nightly.png" 644 \
+		"usr/share/icons/hicolor/${size}x${size}/apps" brave-browser-nightly.png
+}
+
+do_install() {
+	local appdir="usr/lib/brave-browser-nightly"
+
+	vmkdir ${appdir}
+	cp -a "${wrksrc}"/* "${DESTDIR}/${appdir}/"
+
+	chmod 755 "${DESTDIR}/${appdir}/brave"
+	chmod 755 "${DESTDIR}/${appdir}/brave-browser-nightly"
+	chmod 755 "${DESTDIR}/${appdir}/chrome-sandbox"
+	chmod 755 "${DESTDIR}/${appdir}/chrome_crashpad_handler"
+
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}/${appdir}/brave-browser-nightly" \
+		"${DESTDIR}/usr/bin/brave-browser-nightly"
+
+	for size in 16 24 32 48 64 128 256; do
+		_do_install_icon "$size"
+	done
+
+	vmkdir usr/share/applications
+	cat > "${DESTDIR}/usr/share/applications/brave-browser-nightly.desktop" <<-EOF
+		[Desktop Entry]
+		Version=1.0
+		Name=Brave Nightly
+		GenericName=Web Browser
+		Comment=Browse the web
+		Exec=brave-browser-nightly %U
+		Terminal=false
+		Icon=brave-browser-nightly
+		Type=Application
+		Categories=Network;WebBrowser;
+		MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
+	EOF
+
+	vlicense LICENSE
+}
