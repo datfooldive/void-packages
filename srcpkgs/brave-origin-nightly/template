@@ -1,6 +1,6 @@
 # Template file for 'brave-origin-nightly'
 pkgname=brave-origin-nightly
-version=1.94.10
+version=1.94.12
 revision=1
 archs="x86_64"
 create_wrksrc=yes
@@ -12,7 +12,7 @@ maintainer="datfooldive <datfooldive@gmail.com>"
 license="MPL-2.0"
 homepage="https://github.com/brave/brave-browser"
 distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-nightly-${version}-linux-amd64.zip"
-checksum=cfa8defa639b3ab503a6c240ef71d20246992a1fa737a05a372233d438831deb
+checksum=9c8c64df31045bee90a8082e0259a812478b10dcbd11eefbf42237b02c6c5edd
 repository="nonfree"
 nostrip=yes
 nopie=yes
