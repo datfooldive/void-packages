@@ -1,7 +1,7 @@
 # Template file for 'brave-browser-nightly'
 pkgname=brave-browser-nightly
-version=1.94.23
-revision=1
+version=1.94.37
+revision=2
 archs="x86_64"
 create_wrksrc=yes
 hostmakedepends="unzip"
@@ -12,7 +12,7 @@ maintainer="datfooldive <datfooldive@gmail.com>"
 license="MPL-2.0"
 homepage="https://github.com/brave/brave-browser"
 distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser-nightly-${version}-linux-amd64.zip"
-checksum=2ad1504916b2708f289164f7bffef8ee90d5b3066cb0e9abcec76123c10220bd
+checksum=636a071f6006626950299673a8a1c9d1e8fffe928be5f23eec96fa53d6fc5480
 repository="nonfree"
 nostrip=yes
 nopie=yes
