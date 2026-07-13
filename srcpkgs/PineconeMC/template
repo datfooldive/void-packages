@@ -1,6 +1,6 @@
 # Template file for 'PineconeMC'
 pkgname=PineconeMC
-version=11.0.2
+version=11.0.3
 revision=1
 archs="x86_64"
 create_wrksrc=yes
@@ -11,7 +11,7 @@ maintainer="datfooldive <datfooldive@gmail.com>"
 license="GPL-3.0-only, LGPL-3.0-or-later, LGPL-2.0-or-later, Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, OFL-1.1, custom:Batch"
 homepage="https://github.com/ElyPrismLauncher/Launcher"
 distfiles="https://github.com/ElyPrismLauncher/Launcher/releases/download/${version}/PineconeMC-Linux-Qt6-Portable-${version}.tar.gz"
-checksum=bc0ee62411ebd77e13d78f0deaf00a82aa39c4a4d770ff4c32592a53f7708f1d
+checksum=c1693e32668a8897529f3215aa8369e2562efde84adb999a210cc613c58ee916
 
 nopie=yes
 nostrip=yes
