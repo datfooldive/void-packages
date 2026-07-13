@@ -1,6 +1,6 @@
 # Template file for 'FjordLauncher'
 pkgname=FjordLauncher
-version=11.0.2.0
+version=11.0.3.0
 revision=1
 archs="x86_64"
 create_wrksrc=yes
@@ -9,7 +9,7 @@ maintainer="datfooldive <datfooldive@gmail.com>"
 license="GPL-3.0-only, LGPL-3.0-or-later, LGPL-2.0-or-later, Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, OFL-1.1, custom:Batch"
 homepage="https://github.com/unmojang/FjordLauncher"
 distfiles="https://github.com/unmojang/FjordLauncher/releases/download/${version}/FjordLauncher-Linux-Qt6-Portable-${version}.tar.gz"
-checksum=2e2d5dc2228ac21e80ca036b3c1381800f10e98b36d62b9ac2005c54e68a6e4a
+checksum=37152ce308d88eb514e21a48ac9936efb534e1fb041e08d5727893e5189fde5c
 depends="java-runtime>=17 libglvnd qt6-base qt6-qt5compat qt6-svg
  qt6-imageformats qt6-networkauth qt6-plugin-tls-openssl zlib hicolor-icon-theme"
 
